@@ -36,7 +36,7 @@ def get7zFromLink(link):
                 family = link[i + 1]
             i = i + 1
 
-        # requests.post('http://127.0.0.1:8000/insert_virus/' + virus_hash + '/' + family)
+        requests.post('http://127.0.0.1:8000/insert_virus/' + virus_hash + '/' + family)
 
 
 app = FastAPI()
