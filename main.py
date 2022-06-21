@@ -1,12 +1,7 @@
-from fastapi import FastAPI
-from pydantic import BaseModel
 from bs4 import BeautifulSoup
 import requests
 
-import Database
-
 URL = "https://samples.vx-underground.org/samples/Families/"
-collection_name = Database.get_database()['Samples']
 
 
 def get7zFromLink(link):
@@ -37,31 +32,6 @@ def get7zFromLink(link):
             i = i + 1
 
         requests.post('http://127.0.0.1:8000/insert_virus/' + virus_hash + '/' + family)
-
-
-app = FastAPI()
-
-
-@app.get('/get_virus_family/{hash}')
-def get_virus_family(hash: str):
-    obj = collection_name.find_one(hash)
-    return {'Family': obj['family']}
-
-
-@app.get('/get_virus_hashes_by_family/{family}')
-def get_virus_hashes_by_family(family: str):
-    obj = collection_name.find({'family': family})
-    return list(obj)
-
-
-@app.post('/insert_virus/{hash}/{family}')
-def insert_virus(hash: str, family: str):
-    item = {
-        "_id": hash,
-        "family": family,
-    }
-    collection_name.insert_one(item)
-    return {'Sample inserted successfully'}
 
 
 if __name__ == '__main__':
